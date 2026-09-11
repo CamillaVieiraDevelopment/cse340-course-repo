@@ -9,7 +9,7 @@ import { getAllOrganizations } from './src/models/organizations.js';
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 
-// Define the port number the server will listen on
+// Define the port number the server will listen on 
 const PORT = process.env.PORT || 3000;
 
 // Define the current file and directory paths
@@ -44,7 +44,7 @@ app.get('/organizations', async (req, res) => {
     console.log(organizations);
 
     const title = 'Our Partner Organizations';
-    res.render('organizations', { title });
+    res.render('organizations', { title, organizations});
 });
 
 app.get('/projects', async (req, res) => {
