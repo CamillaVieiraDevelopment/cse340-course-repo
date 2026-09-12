@@ -77,3 +77,25 @@ CREATE TABLE project_category (
     FOREIGN KEY (project_id) REFERENCES service_project(project_id),
     FOREIGN KEY (category_id) REFERENCES category(category_id)
 );
+
+-- =============================================================================
+-- Population data - Join Table for conect projects and categories
+-- =============================================================================
+
+-- Insert 3 relevant categories for service projects
+INSERT INTO category (name) VALUES 
+('Environment & Sustainability'),
+('Community & Infrastructure'),
+('Education & Support');
+
+-- Associate the 15 previously created projects with categories
+-- The format is (project_id, category_id)
+INSERT INTO project_category (project_id, category_id) VALUES 
+-- Bright Future Builders projects (Focused on Infrastructure/Community -> ID 2)
+(1, 2), (2, 2), (3, 2), (4, 2), (5, 2),
+
+-- GreenHarvest Growers projects (Focused on Environment -> ID 1, and some on Education -> ID 3)
+(6, 1), (7, 1), (8, 1), (8, 3), (9, 2), (10, 1),
+
+-- UnityServe Volunteers projects (Focused on Support/Community -> ID 2, Education -> ID 3, Environment -> ID 1)
+(11, 2), (12, 2), (13, 1), (14, 2), (15, 3);
