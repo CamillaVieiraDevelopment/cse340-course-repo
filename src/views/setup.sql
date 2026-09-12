@@ -58,3 +58,22 @@ INSERT INTO service_project (organization_id, title, description, location, date
 (3, 'River Cleanup', 'Picking up trash and debris along the riverbank.', 'Riverfront Park', '2026-11-08'),
 (3, 'Animal Shelter Dog Walking', 'Walking dogs and cleaning kennels at the county shelter.', 'County Animal Rescue', '2026-11-18'),
 (3, 'Holiday Toy Drive Sorting', 'Sorting and wrapping donated toys for children.', 'Community Hall', '2026-12-05');
+
+-- ========================================
+-- Create Category Table
+-- ========================================
+CREATE TABLE category (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+
+-- =============================================================================
+-- Create Join Table for conect projects and categories - Structural Correction
+-- =============================================================================
+CREATE TABLE project_category (
+    project_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+    PRIMARY KEY (project_id, category_id),
+    FOREIGN KEY (project_id) REFERENCES service_project(project_id),
+    FOREIGN KEY (category_id) REFERENCES category(category_id)
+);
