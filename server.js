@@ -1,3 +1,6 @@
+// ============================================================================
+// IMPORTS
+// ============================================================================
 import { fileURLToPath } from 'url';
 import path from 'path';
 import express from 'express';
@@ -6,8 +9,9 @@ import { getAllOrganizations } from './src/models/organizations.js';
 import { getAllProjects } from './src/models/projects.js';
 import { getAllCategories } from './src/models/categories.js';
 
-
-
+// ============================================================================
+// ENVIRONMENT & CONSTANTS
+// ============================================================================
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 
@@ -20,8 +24,9 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-//**Configuretions Express middleware**
-
+// ============================================================================
+// EXPRESS MIDDLEWARE & CONFIGURATIONS
+// ============================================================================
 // Middleware to log all incoming requests
 app.use((req, res, next) => {
     if (NODE_ENV === 'development') {
@@ -36,7 +41,6 @@ app.use((req, res, next) => {
     next();
 });
 
-
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -46,9 +50,9 @@ app.set('view engine', 'ejs');
 // Tell Express where to find your templates
 app.set('views', path.join(__dirname, 'src/views'));
 
-/**
- * Routes
- */
+// ============================================================================
+// ROUTES
+// ============================================================================
 app.get('/', async (req, res) => {
     const title = 'Home';
     res.render('home', { title });
@@ -59,12 +63,12 @@ app.get('/organizations', async (req, res) => {
     console.log(organizations);
 
     const title = 'Our Partner Organizations';
-    res.render('organizations', { title, organizations});
+    res.render('organizations', { title, organizations });
 });
 
 app.get('/projects', async (req, res) => {
     const projects = await getAllProjects();
-    console.log(projects); 
+    console.log(projects);
 
     const title = 'Service Projects';
     res.render('projects', { title, projects });
@@ -76,6 +80,19 @@ app.get('/categories', async (req, res) => {
     res.render('categories', { title, categories });
 });
 
+// ============================================================================
+// ERROR HANDLING
+// ============================================================================
+// Catch-all route for 404 errors (Must be the last route before app.listen)
+app.use((req, res, next) => {
+    const err = new Error('Page Not Found');
+    err.status = 404;
+    next(err);
+});
+
+// ============================================================================
+// SERVER INITIALIZATION
+// ============================================================================
 app.listen(PORT, async () => {
     try {
         await testConnection();
