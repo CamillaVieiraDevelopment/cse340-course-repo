@@ -1,0 +1,32 @@
+<%- include('partials/header') %>
+
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
+
+        <h2>
+            <%= organizationDetails.name %>
+        </h2>
+
+        <!-- Organization logo -->
+        <img src="/images/<%= organizationDetails.logo_filename %>" alt="<%= organizationDetails.name %> logo">
+
+        <p>Description: <%= organizationDetails.description %>
+        </p>
+
+        <h3>Service Projects</h3>
+
+        <ul>
+            <% projects.forEach(project=> { %>
+                <li>
+                    <!-- Link to the specific project details page -->
+                    <a href="/project/<%= project.project_id %>">
+                        <%= project.title %>
+                    </a>
+                </li>
+                <% }) %>
+        </ul>
+    </main>
+
+    <%- include('partials/footer') %>

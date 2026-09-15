@@ -5,14 +5,15 @@
             <%= title %>
         </h1>
 
-        <p>Coming Soon!</p>
-
         <p>Here are a few of our partner organizations:</p>
 
         <ul>
             <% organizations.forEach(organization=> { %>
                 <li>
-                    <img src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %> logo">
+                    <!-- Link added around the image to route to the details page -->
+                    <a href="/organization/<%= organization.organization_id %>">
+                        <img src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %> logo">
+                    </a>
                     <strong>
                         <%= organization.name %>
                     </strong>:
