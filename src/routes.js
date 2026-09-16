@@ -10,7 +10,9 @@ import { showOrganizationsPage, showOrganizationDetailsPage } from './controller
 // Import project controllers (list and details)
 import { showProjectsPage, showProjectDetailsPage } from './controllers/projects.js';
 
-import { showCategoriesPage } from './controllers/categories.js';
+// Import category controllers (list and details) - COMBINED INTO ONE LINE
+import { showCategoriesPage, showCategoryDetailsPage } from './controllers/categories.js';
+
 import { testErrorPage } from './controllers/errors.js';
 
 const router = express.Router();
@@ -22,14 +24,17 @@ router.get('/', showHomePage);
 
 // Organization routes
 router.get('/organizations', showOrganizationsPage);
-router.get('/organization/:id', showOrganizationDetailsPage); // <-- Missing route!
+router.get('/organization/:id', showOrganizationDetailsPage);
 
 // Project routes
 router.get('/projects', showProjectsPage);
 router.get('/project/:id', showProjectDetailsPage);
 
-// Other routes
+// Category routes
 router.get('/categories', showCategoriesPage);
+router.get('/category/:id', showCategoryDetailsPage); // <-- New route from the assignment
+
+// Other routes
 router.get('/test-error', testErrorPage);
 
 // ============================================================================

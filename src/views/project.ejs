@@ -20,8 +20,23 @@
         </p>
 
         <p>
-            <strong>Description:</strong>
-            <%= project.description %>
+            <strong>Description:</strong> <%= project.description %>
+        </p>
+
+        <!-- NEW: Category Tags -->
+        <p>
+            <strong>Categories:</strong>
+            <% if (categories && categories.length > 0) { %>
+                <% categories.forEach(category => { %>
+                    <span class="tag">
+                        <a href="/category/<%= category.category_id %>">
+                            <%= category.name %>
+                        </a>
+                    </span>
+                <% }); %>
+            <% } else { %>
+                None
+            <% } %>
         </p>
     </main>
 
