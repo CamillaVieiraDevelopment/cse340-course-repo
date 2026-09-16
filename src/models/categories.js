@@ -10,7 +10,7 @@ const getAllCategories = async () => {
 // NEW: Retrieve a single category by its ID
 const getCategoryDetails = async (id) => {
     const query = `
-        SELECT category_id, name, description
+        SELECT category_id, name
         FROM public.category
         WHERE category_id = $1;
     `;
