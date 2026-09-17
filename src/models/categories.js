@@ -18,6 +18,7 @@ const getCategoryDetails = async (id) => {
     return result.rows.length > 0 ? result.rows[0] : null;
 };
 
+
 // NEW: Retrieve all service projects for a given category
 const getProjectsByCategoryId = async (categoryId) => {
     const query = `
