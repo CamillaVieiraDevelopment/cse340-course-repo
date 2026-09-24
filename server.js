@@ -6,6 +6,8 @@ import path from 'path';
 import express from 'express';
 import { testConnection } from './src/models/db.js';
 import router from './src/routes.js';
+import session from 'express-session';
+
 
 // ============================================================================
 // ENVIRONMENT & CONSTANTS
@@ -15,6 +17,9 @@ const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 
 // Define the port number the server will listen on 
 const PORT = process.env.PORT || 3000;
+
+// Define Sesseion_Secreet
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 // Define the current file and directory paths
 const __filename = fileURLToPath(import.meta.url);
@@ -34,6 +39,14 @@ app.set('views', path.join(__dirname, 'src/views'));
 // ============================================================================
 // EXPRESS MIDDLEWARE
 // ============================================================================
+// Set up session management
+app.use(session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60 * 60 * 1000 } // Session expires after 1 hour of inactivity
+}));
+
 // Middleware to log all incoming requests
 app.use((req, res, next) => {
     if (NODE_ENV === 'development') {
