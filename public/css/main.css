@@ -173,3 +173,40 @@ footer p {
         font-size: 1.35rem;
     }
 }
+
+/* =========================
+   Flash messages
+   ========================= */
+
+.alert {
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    /* Mesmo arredondamento do menu */
+    font-weight: 500;
+}
+
+.alert.success {
+    color: #1e5a37;
+    background-color: #e8f5ec;
+    border-color: #c9e6d4;
+}
+
+.alert.error {
+    color: #8c2a2a;
+    background-color: #fbecec;
+    border-color: #f2cece;
+}
+
+.alert.warning {
+    color: #826214;
+    background-color: #fdf5e6;
+    border-color: #f5e4c6;
+}
+
+.alert.info {
+    color: #1f3a5f;
+    background-color: #eaf0f6;
+    border-color: #c5d7eb;
+}

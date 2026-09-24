@@ -7,6 +7,7 @@ import express from 'express';
 import { testConnection } from './src/models/db.js';
 import router from './src/routes.js';
 import session from 'express-session';
+import flash from './src/middleware/flash.js';
 
 
 // ============================================================================
@@ -73,6 +74,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // ============================================================================
 // Use the imported router to handle routes
 app.use(router);
+// Use flash message middleware
+app.use(flash);
 
 // ============================================================================
 // ERROR HANDLING

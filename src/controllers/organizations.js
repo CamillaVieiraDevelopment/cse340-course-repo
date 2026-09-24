@@ -32,6 +32,11 @@ const processNewOrganizationForm = async (req, res) => {
 
     const organizationId = await createOrganization(name, description, contactEmail, logoFilename);
     res.redirect(`/organization/${organizationId}`);
+
+    // Set a success flash message
+    req.flash('success', 'Organization added successfully!');
+
+    res.redirect(`/organization/${organizationId}`);
 };
 // Export any controller functions
 export { showOrganizationsPage, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm };
