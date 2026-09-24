@@ -70,12 +70,16 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ============================================================================
+// MIDDLEWARE FLASH
+// ============================================================================
+// Use flash message middleware
+app.use(flash);
+
+// ============================================================================
 // ROUTES
 // ============================================================================
 // Use the imported router to handle routes
 app.use(router);
-// Use flash message middleware
-app.use(flash);
 
 // ============================================================================
 // ERROR HANDLING
