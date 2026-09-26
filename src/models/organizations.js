@@ -58,5 +58,27 @@ const createOrganization = async (name, description, contactEmail, logoFilename)
   return result.rows[0].organization_id;
 };
 
+// Nova função para atualizar uma organização existente
+const updateOrganization = async (organizationId, name, description, contactEmail, logoFilename) => {
+  const query = `
+        UPDATE organization
+        SET name = $1, description = $2, contact_email = $3, logo_filename = $4
+        WHERE organization_id = $5
+        RETURNING organization_id;
+    `;
+  const queryParams = [name, description, contactEmail, logoFilename, organizationId];
+  const result = await db.query(query, queryParams);
+
+  if (result.rows.length === 0) {
+    throw new Error('Organization not found');
+  }
+
+  if (process.env.ENABLE_SQL_LOGGING === 'true') {
+    console.log(`Updated organization with ID: ${result.rows[0].organization_id}`);
+  }
+
+  return result.rows[0].organization_id;
+};
+
 // Export the model functions - AQUI FOI ADICIONADA A NOVA FUNÇÃO
-export { getAllOrganizations, getOrganizationDetails, createOrganization };
+export { getAllOrganizations, getOrganizationDetails, createOrganization, updateOrganization };

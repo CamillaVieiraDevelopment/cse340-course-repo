@@ -9,6 +9,11 @@
             <%= organizationDetails.name %>
         </h2>
 
+        <!-- Edit link added here -->
+        <p>
+            <a href="/edit-organization/<%= organizationDetails.organization_id %>">Edit Organization</a>
+        </p>
+
         <!-- Organization logo -->
         <img src="/images/<%= organizationDetails.logo_filename %>" alt="<%= organizationDetails.name %> logo">
 
