@@ -4,17 +4,22 @@
 import express from 'express';
 import { showHomePage } from './controllers/index.js';
 
-// Import organization controllers (list and details)
-import { showOrganizationsPage, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm } from './controllers/organizations.js';
+// Import organization controllers and validation rules together
+import {
+    showOrganizationsPage,
+    showOrganizationDetailsPage,
+    showNewOrganizationForm,
+    processNewOrganizationForm,
+    organizationValidation
+} from './controllers/organizations.js';
 
 // Import project controllers (list and details)
 import { showProjectsPage, showProjectDetailsPage } from './controllers/projects.js';
 
-// Import category controllers (list and details) - COMBINED INTO ONE LINE
+// Import category controllers (list and details)
 import { showCategoriesPage, showCategoryDetailsPage } from './controllers/categories.js';
 
 import { testErrorPage } from './controllers/errors.js';
-
 
 const router = express.Router();
 
@@ -31,7 +36,7 @@ router.get('/organization/:id', showOrganizationDetailsPage);
 router.get('/new-organization', showNewOrganizationForm);
 
 // Route to handle new organization form submission
-router.post('/new-organization', processNewOrganizationForm);
+router.post('/new-organization', organizationValidation, processNewOrganizationForm);
 
 // Project routes
 router.get('/projects', showProjectsPage);
@@ -39,8 +44,7 @@ router.get('/project/:id', showProjectDetailsPage);
 
 // Category routes
 router.get('/categories', showCategoriesPage);
-router.get('/category/:id', showCategoryDetailsPage); // <-- New route from the assignment
-
+router.get('/category/:id', showCategoryDetailsPage);
 
 // Other routes
 router.get('/test-error', testErrorPage);
