@@ -24,8 +24,13 @@ import {
     projectValidation
 } from './controllers/projects.js';
 
-// Import category controllers (list and details)
-import { showCategoriesPage, showCategoryDetailsPage } from './controllers/categories.js';
+// Import category controllers (list, details, and assignment forms)
+import {
+    showCategoriesPage,
+    showCategoryDetailsPage,
+    showAssignCategoriesForm,
+    processAssignCategoriesForm
+} from './controllers/categories.js';
 
 import { testErrorPage } from './controllers/errors.js';
 
@@ -57,6 +62,10 @@ router.post('/new-project', projectValidation, processNewProjectForm);
 
 // Project details
 router.get('/project/:id', showProjectDetailsPage);
+
+// Routes to handle the assign categories to project form
+router.get('/assign-categories/:projectId', showAssignCategoriesForm);
+router.post('/assign-categories/:projectId', processAssignCategoriesForm);
 
 // Category routes
 router.get('/categories', showCategoriesPage);

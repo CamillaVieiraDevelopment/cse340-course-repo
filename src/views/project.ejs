@@ -2,42 +2,42 @@
 
     <main>
         <h1>
-            <%= project.title %>
+            <%= title %>
         </h1>
 
-        <p>
-            <strong>Date:</strong>
-            <%= project.date %><br>
-                <strong>Location:</strong>
-                <%= project.location %>
-        </p>
+        <h2>
+            <%= project.title %>
+        </h2>
 
-        <p>
-            <strong>Partner Organization:</strong>
-            <a href="/organization/<%= project.organization_id %>">
+        <!-- NEW: Link to assign/edit categories -->
+        <p><a href="/assign-categories/<%= project.project_id %>">Edit Categories</a></p>
+
+        <p><strong>Partner Organization:</strong> <a href="/organization/<%= project.organization_id %>">
                 <%= project.organization_name %>
-            </a>
+            </a></p>
+        <p><strong>Description:</strong>
+            <%= project.description %>
+        </p>
+        <p><strong>Date:</strong>
+            <%= project.date %>
+        </p>
+        <p><strong>Location:</strong>
+            <%= project.location %>
         </p>
 
-        <p>
-            <strong>Description:</strong> <%= project.description %>
-        </p>
-
-        <!-- NEW: Category Tags -->
-        <p>
-            <strong>Categories:</strong>
-            <% if (categories && categories.length > 0) { %>
-                <% categories.forEach(category => { %>
-                    <span class="tag">
-                        <a href="/category/<%= category.category_id %>">
+        <h3>Categories:</h3>
+        <% if (categories && categories.length> 0) { %>
+            <ul>
+                <% categories.forEach(category=> { %>
+                    <li><a href="/category/<%= category.category_id %>">
                             <%= category.name %>
-                        </a>
-                    </span>
-                <% }); %>
+                        </a></li>
+                    <% }); %>
+            </ul>
             <% } else { %>
-                None
-            <% } %>
-        </p>
+                <p>No categories assigned to this project yet.</p>
+                <% } %>
+
     </main>
 
     <%- include('partials/footer') %>
