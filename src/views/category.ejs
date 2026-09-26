@@ -5,6 +5,9 @@
             <%= category.name %>
         </h1>
 
+        <!-- NEW: Link to edit category -->
+        <p><a href="/edit-category/<%= category.category_id %>">Edit Category</a></p>
+
         <h2>Projects in this Category</h2>
         <ul>
             <% if (projects.length> 0) { %>

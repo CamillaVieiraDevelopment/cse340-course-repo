@@ -15,7 +15,7 @@ import {
     organizationValidation
 } from './controllers/organizations.js';
 
-// Import project controllers (list, details, new project, and edit forms)
+// Import project controllers
 import {
     showProjectsPage,
     showProjectDetailsPage,
@@ -26,12 +26,17 @@ import {
     projectValidation
 } from './controllers/projects.js';
 
-// Import category controllers (list, details, and assignment forms)
+// Import category controllers
 import {
     showCategoriesPage,
     showCategoryDetailsPage,
     showAssignCategoriesForm,
-    processAssignCategoriesForm
+    processAssignCategoriesForm,
+    showNewCategoryForm,
+    processNewCategoryForm,
+    showEditCategoryForm,
+    processEditCategoryForm,
+    categoryValidation
 } from './controllers/categories.js';
 
 import { testErrorPage } from './controllers/errors.js';
@@ -58,7 +63,7 @@ router.post('/edit-organization/:id', organizationValidation, processEditOrganiz
 // Project routes
 router.get('/projects', showProjectsPage);
 
-// Route for new project page (Must be defined BEFORE /project/:id to avoid parameter conflicts)
+// Route for new project page 
 router.get('/new-project', showNewProjectForm);
 router.post('/new-project', projectValidation, processNewProjectForm);
 
@@ -75,6 +80,16 @@ router.post('/assign-categories/:projectId', processAssignCategoriesForm);
 
 // Category routes
 router.get('/categories', showCategoriesPage);
+
+// NEW: Routes for new category
+router.get('/new-category', showNewCategoryForm);
+router.post('/new-category', categoryValidation, processNewCategoryForm);
+
+// NEW: Routes for editing category
+router.get('/edit-category/:id', showEditCategoryForm);
+router.post('/edit-category/:id', categoryValidation, processEditCategoryForm);
+
+// Category details
 router.get('/category/:id', showCategoryDetailsPage);
 
 // Other routes

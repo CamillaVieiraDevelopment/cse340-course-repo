@@ -7,7 +7,7 @@ const getAllCategories = async () => {
     return result.rows;
 };
 
-// NEW: Retrieve a single category by its ID
+// Retrieve a single category by its ID
 const getCategoryDetails = async (id) => {
     const query = `
         SELECT category_id, name
@@ -18,7 +18,7 @@ const getCategoryDetails = async (id) => {
     return result.rows.length > 0 ? result.rows[0] : null;
 };
 
-// NEW: Retrieve all service projects for a given category
+// Retrieve all service projects for a given category
 const getProjectsByCategoryId = async (categoryId) => {
     const query = `
         SELECT 
@@ -39,7 +39,7 @@ const getProjectsByCategoryId = async (categoryId) => {
     return result.rows;
 };
 
-// NEW: Retrieve all categories for a given service project
+// Retrieve all categories for a given service project
 const getCategoriesByProjectId = async (projectId) => {
     const query = `
         SELECT c.category_id, c.name
@@ -52,7 +52,7 @@ const getCategoriesByProjectId = async (projectId) => {
     return result.rows;
 };
 
-// NEW: Assign a single category to a project
+// Assign a single category to a project
 const assignCategoryToProject = async (categoryId, projectId) => {
     const query = `
         INSERT INTO project_category (category_id, project_id)
@@ -61,19 +61,40 @@ const assignCategoryToProject = async (categoryId, projectId) => {
     await db.query(query, [categoryId, projectId]);
 };
 
-// NEW: Update all category assignments for a project
+// Update all category assignments for a project
 const updateCategoryAssignments = async (projectId, categoryIds) => {
-    // First, remove existing category assignments for the project
     const deleteQuery = `
         DELETE FROM project_category
         WHERE project_id = $1;
     `;
     await db.query(deleteQuery, [projectId]);
 
-    // Next, add the new category assignments
     for (const categoryId of categoryIds) {
         await assignCategoryToProject(categoryId, projectId);
     }
+};
+
+// NEW: Create a new category
+const createCategory = async (name) => {
+    const query = `
+        INSERT INTO public.category (name)
+        VALUES ($1)
+        RETURNING category_id;
+    `;
+    const result = await db.query(query, [name]);
+    return result.rows[0].category_id;
+};
+
+// NEW: Update an existing category
+const updateCategory = async (categoryId, name) => {
+    const query = `
+        UPDATE public.category
+        SET name = $1
+        WHERE category_id = $2
+        RETURNING category_id;
+    `;
+    const result = await db.query(query, [name, categoryId]);
+    return result.rows[0].category_id;
 };
 
 // Export all functions
@@ -82,5 +103,7 @@ export {
     getCategoryDetails,
     getProjectsByCategoryId,
     getCategoriesByProjectId,
-    updateCategoryAssignments
+    updateCategoryAssignments,
+    createCategory,
+    updateCategory
 };
