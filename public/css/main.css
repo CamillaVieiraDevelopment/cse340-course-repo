@@ -100,12 +100,10 @@ p {
 
 main ul {
     list-style: none;
-    /* Remove os pontinhos */
     padding-left: 0;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    /* Espaçamento entre os cards */
 }
 
 main li {
@@ -115,7 +113,6 @@ main li {
     padding: 1.2rem 1.5rem;
     display: flex;
     align-items: center;
-    /* Alinha a imagem com o texto */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     margin-bottom: 0;
@@ -123,12 +120,10 @@ main li {
 
 main li:hover {
     transform: translateY(-2px);
-    /* Efeito de flutuar ao passar o mouse */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-color: #cbd5e1;
 }
 
-/* Deixa os links dentro dos cards mais bonitos */
 main li a {
     color: #345d8c;
     font-weight: bold;
@@ -145,28 +140,46 @@ main li a:hover {
    Buttons & Action Links
    ========================= */
 
-/* Pega links isolados (como o de Adicionar) e os transforma em botões */
-main>p>a:only-child {
+/* Transforma links de rotas específicas em botões azuis */
+main>p>a[href*="/new-"],
+main>p>a[href*="/edit-"],
+main>p>a[href*="/assign-"] {
     display: inline-block;
     background-color: #244dd3;
-    /* Verde elegante para ações de adição */
     color: #ffffff;
     padding: 0.7rem 1.2rem;
     text-decoration: none;
     border-radius: 6px;
     font-weight: bold;
-    box-shadow: 0 2px 4px rgba(43, 122, 75, 0.2);
-    transition: background-color 0.2s, transform 0.1s;
+    box-shadow: 0 2px 4px rgba(36, 77, 211, 0.2);
+    transition: background-color 0.2s, color 0.2s, transform 0.1s;
     margin-bottom: 1.5rem;
+    margin-right: 0.5rem;
+    /* Dá espaço se houver dois botões juntos */
 }
 
-main>p>a:only-child:hover {
+main>p>a[href*="/new-"]:hover,
+main>p>a[href*="/edit-"]:hover,
+main>p>a[href*="/assign-"]:hover {
     background-color: #b9c9ff;
     color: #170763;
 }
 
-main>p>a:only-child:active {
+main>p>a[href*="/new-"]:active,
+main>p>a[href*="/edit-"]:active,
+main>p>a[href*="/assign-"]:active {
     transform: scale(0.97);
+}
+
+/* Oculta aquele tracinho "|" entre os links, se houver */
+main>p:has(a[href*="/edit-"]) {
+    font-size: 0;
+    /* Some com o texto solto */
+}
+
+main>p:has(a[href*="/edit-"])>a {
+    font-size: 1rem;
+    /* Restaura o tamanho da fonte apenas para os botões */
 }
 
 /* =========================
@@ -245,7 +258,6 @@ footer p {
     margin-bottom: 1.5rem;
     border: 1px solid transparent;
     border-radius: 6px;
-    /* Mesmo arredondamento do menu */
     font-weight: 500;
 }
 
@@ -328,7 +340,6 @@ textarea {
     min-height: 120px;
 }
 
-/* Estilo específico para caixas de seleção (checkboxes) */
 input[type="checkbox"] {
     width: auto;
     margin-right: 0.5rem;
@@ -354,7 +365,8 @@ button[type="submit"] {
     width: 100%;
     padding: 0.8rem;
     margin-top: 1.5rem;
-    background-color: #1f3a5f;
+    background-color: #244dd3;
+    /* Mesma cor base escolhida por você */
     color: #ffffff;
     font-size: 1rem;
     font-weight: bold;
@@ -365,7 +377,9 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #345d8c;
+    background-color: #b9c9ff;
+    /* Mesma cor de hover */
+    color: #170763;
 }
 
 button[type="submit"]:active {
