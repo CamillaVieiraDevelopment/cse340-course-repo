@@ -148,7 +148,7 @@ main li a:hover {
 /* Pega links isolados (como o de Adicionar) e os transforma em botões */
 main>p>a:only-child {
     display: inline-block;
-    background-color: #2b7a4b;
+    background-color: #244dd3;
     /* Verde elegante para ações de adição */
     color: #ffffff;
     padding: 0.7rem 1.2rem;
@@ -161,8 +161,8 @@ main>p>a:only-child {
 }
 
 main>p>a:only-child:hover {
-    background-color: #3330e9;
-    color: #ffffff;
+    background-color: #b9c9ff;
+    color: #170763;
 }
 
 main>p>a:only-child:active {
