@@ -95,17 +95,79 @@ p {
 
 
 /* =========================
-   Lists
+   Lists (Upgraded to Cards)
    ========================= */
 
 main ul {
-    padding-left: 1.5rem;
+    list-style: none;
+    /* Remove os pontinhos */
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    /* Espaçamento entre os cards */
 }
 
 main li {
-    margin-bottom: 0.75rem;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    /* Alinha a imagem com o texto */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 0;
 }
 
+main li:hover {
+    transform: translateY(-2px);
+    /* Efeito de flutuar ao passar o mouse */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-color: #cbd5e1;
+}
+
+/* Deixa os links dentro dos cards mais bonitos */
+main li a {
+    color: #345d8c;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+main li a:hover {
+    color: #1f3a5f;
+    text-decoration: underline;
+}
+
+/* =========================
+   Buttons & Action Links
+   ========================= */
+
+/* Pega links isolados (como o de Adicionar) e os transforma em botões */
+main>p>a:only-child {
+    display: inline-block;
+    background-color: #2b7a4b;
+    /* Verde elegante para ações de adição */
+    color: #ffffff;
+    padding: 0.7rem 1.2rem;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(43, 122, 75, 0.2);
+    transition: background-color 0.2s, transform 0.1s;
+    margin-bottom: 1.5rem;
+}
+
+main>p>a:only-child:hover {
+    background-color: #3330e9;
+    color: #ffffff;
+}
+
+main>p>a:only-child:active {
+    transform: scale(0.97);
+}
 
 /* =========================
    Images
@@ -209,4 +271,103 @@ footer p {
     color: #1f3a5f;
     background-color: #eaf0f6;
     border-color: #c5d7eb;
+}
+
+/* =========================
+   Forms
+   ========================= */
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    color: #1f3a5f;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+textarea,
+select {
+    width: 100%;
+    padding: 0.65rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1rem;
+    color: #263238;
+    background-color: #f8fafc;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #1f3a5f;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(31, 58, 95, 0.15);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Estilo específico para caixas de seleção (checkboxes) */
+input[type="checkbox"] {
+    width: auto;
+    margin-right: 0.5rem;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.form-group>div {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.form-group>div label {
+    margin-bottom: 0;
+    font-weight: 400;
+    color: #263238;
+    cursor: pointer;
+}
+
+button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 1.5rem;
+    background-color: #1f3a5f;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #345d8c;
+}
+
+button[type="submit"]:active {
+    transform: scale(0.98);
 }
