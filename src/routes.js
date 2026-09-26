@@ -15,12 +15,14 @@ import {
     organizationValidation
 } from './controllers/organizations.js';
 
-// Import project controllers (list, details, and new project form)
+// Import project controllers (list, details, new project, and edit forms)
 import {
     showProjectsPage,
     showProjectDetailsPage,
     showNewProjectForm,
     processNewProjectForm,
+    showEditProjectForm,
+    processEditProjectForm,
     projectValidation
 } from './controllers/projects.js';
 
@@ -59,6 +61,10 @@ router.get('/projects', showProjectsPage);
 // Route for new project page (Must be defined BEFORE /project/:id to avoid parameter conflicts)
 router.get('/new-project', showNewProjectForm);
 router.post('/new-project', projectValidation, processNewProjectForm);
+
+// Routes for editing project
+router.get('/edit-project/:id', showEditProjectForm);
+router.post('/edit-project/:id', projectValidation, processEditProjectForm);
 
 // Project details
 router.get('/project/:id', showProjectDetailsPage);
