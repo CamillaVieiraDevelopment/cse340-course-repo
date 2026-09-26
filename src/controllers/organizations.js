@@ -4,7 +4,6 @@ import { getProjectsByOrganizationId } from '../models/projects.js';
 import { body, validationResult } from 'express-validator';
 
 // Define validation and sanitization rules for organization form
-// Define validation rules for organization form
 const organizationValidation = [
     body('name')
         .trim()
@@ -48,11 +47,12 @@ const showNewOrganizationForm = async (req, res) => {
     const title = 'Add New Organization';
 
     res.render('new-organization', { title });
-}
+};
 
 const processNewOrganizationForm = async (req, res) => {
     // Check for validation errors
     const results = validationResult(req);
+
     if (!results.isEmpty()) {
         // Validation failed - loop through errors
         results.array().forEach((error) => {
@@ -67,15 +67,19 @@ const processNewOrganizationForm = async (req, res) => {
     const logoFilename = 'placeholder-logo.png'; // Use the placeholder logo for all new organizations    
 
     const organizationId = await createOrganization(name, description, contactEmail, logoFilename);
-    req.flash('success', 'Organization added successfully!');
-    res.redirect(`/organization/${organizationId}`);
-};
+
     // Set a success flash message (Before redirection)
     req.flash('success', 'Organization added successfully!');
 
-    //Redirection 
+    // Redirection 
     return res.redirect(`/organization/${organizationId}`);
+};
 
 // Export any controller functions
 export {
-    showOrganizationsPage, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm, organizationValidation};
+    showOrganizationsPage,
+    showOrganizationDetailsPage,
+    showNewOrganizationForm,
+    processNewOrganizationForm,
+    organizationValidation
+};
