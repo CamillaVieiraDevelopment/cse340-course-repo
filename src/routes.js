@@ -3,8 +3,17 @@
 // ============================================================================
 import express from 'express';
 import { showHomePage } from './controllers/index.js';
-import { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout } from './controllers/users.js';
 
+// Alterado no Step 4: Importar requireLogin e showDashboard
+import {
+    requireLogin,
+    showUserRegistrationForm,
+    processUserRegistrationForm,
+    showLoginForm,
+    processLoginForm,
+    processLogout,
+    showDashboard
+} from './controllers/users.js';
 
 // Import organization controllers and validation rules together
 import {
@@ -105,6 +114,9 @@ router.post('/register', processUserRegistrationForm);
 router.get('/login', showLoginForm);
 router.post('/login', processLoginForm);
 router.get('/logout', processLogout);
+
+// Adicionado no Step 4: Rota protegida do painel de controlo (Dashboard)
+router.get('/dashboard', requireLogin, showDashboard);
 
 // ============================================================================
 // EXPORTS

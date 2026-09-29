@@ -2,9 +2,19 @@ import bcrypt from 'bcrypt';
 import { createUser, authenticateUser } from '../models/users.js';
 
 // ==========================================
+// MIDDLEWARE DE PROTEÇÃO DE ROTA (Step 1)
+// ==========================================
+const requireLogin = (req, res, next) => {
+    if (!req.session || !req.session.user) {
+        req.flash('error', 'You must be logged in to access this page.');
+        return res.redirect('/login');
+    }
+    next();
+};
+
+// ==========================================
 // REGISTER FUNCTIONS
 // ==========================================
-
 const showUserRegistrationForm = (req, res) => {
     res.render('register', { title: 'Register' });
 };
@@ -31,9 +41,8 @@ const processUserRegistrationForm = async (req, res) => {
 };
 
 // ==========================================
-// LOGIN FUNCTION
+// LOGIN & DASHBOARD FUNCTIONS
 // ==========================================
-
 const showLoginForm = (req, res) => {
     res.render('login', { title: 'Login' });
 };
@@ -51,7 +60,8 @@ const processLoginForm = async (req, res) => {
             if (res.locals.NODE_ENV === 'development') {
                 console.log('User logged in:', user);
             }
-            res.redirect('/');
+            // Alterado no Step 5: Redireciona para o dashboard
+            res.redirect('/dashboard');
         } else {
             req.flash('error', 'Invalid email or password.');
             res.redirect('/login');
@@ -71,13 +81,25 @@ const processLogout = async (req, res) => {
     res.redirect('/login');
 };
 
+// Adicionado no Step 3: Controlador do Dashboard
+const showDashboard = (req, res) => {
+    const user = req.session.user;
+    res.render('dashboard', {
+        title: 'Dashboard',
+        name: user.name,
+        email: user.email
+    });
+};
+
 // ==========================================
 // EXPORTS
 // ==========================================
 export {
+    requireLogin,
     showUserRegistrationForm,
     processUserRegistrationForm,
     showLoginForm,
     processLoginForm,
-    processLogout
+    processLogout,
+    showDashboard
 };
