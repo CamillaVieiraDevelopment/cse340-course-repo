@@ -3,7 +3,8 @@
 // ============================================================================
 import express from 'express';
 import { showHomePage } from './controllers/index.js';
-import { showUserRegistrationForm, processUserRegistrationForm } from './controllers/users.js';
+import { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout } from './controllers/users.js';
+
 
 // Import organization controllers and validation rules together
 import {
@@ -100,8 +101,12 @@ router.get('/test-error', testErrorPage);
 router.get('/register', showUserRegistrationForm);
 router.post('/register', processUserRegistrationForm);
 
+// User login routes
+router.get('/login', showLoginForm);
+router.post('/login', processLoginForm);
+router.get('/logout', processLogout);
+
 // ============================================================================
 // EXPORTS
 // ============================================================================
 export default router;
-export { showUserRegistrationForm, processUserRegistrationForm };
