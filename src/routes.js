@@ -3,6 +3,7 @@
 // ============================================================================
 import express from 'express';
 import { showHomePage } from './controllers/index.js';
+import { showUserRegistrationForm, processUserRegistrationForm } from './controllers/users.js';
 
 // Import organization controllers and validation rules together
 import {
@@ -103,3 +104,4 @@ router.post('/register', processUserRegistrationForm);
 // EXPORTS
 // ============================================================================
 export default router;
+export { showUserRegistrationForm, processUserRegistrationForm };
