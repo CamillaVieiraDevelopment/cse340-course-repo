@@ -1,4 +1,5 @@
 import db from './db.js'
+import bcrypt from 'bcrypt';
 
 const createUser = async (name, email, passwordHash) => {
     const default_role = 'user';
