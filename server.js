@@ -9,7 +9,6 @@ import router from './src/routes.js';
 import session from 'express-session';
 import flash from './src/middleware/flash.js';
 
-
 // ============================================================================
 // ENVIRONMENT & CONSTANTS
 // ============================================================================
@@ -56,18 +55,23 @@ app.use((req, res, next) => {
     next(); // Pass control to the next middleware or route
 });
 
-// Middleware to make NODE_ENV available to all templates
-app.use((req, res, next) => {
-    res.locals.NODE_ENV = NODE_ENV;
-    next();
-});
-
 // Allow Express to receive and process common POST data
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Middleware to serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Middleware Login e NODE_ENV consolidados
+app.use((req, res, next) => {
+    res.locals.isLoggedIn = false;
+    if (req.session && req.session.user) {
+        res.locals.isLoggedIn = true;
+    }
+
+    res.locals.NODE_ENV = NODE_ENV;
+    next();
+});
 
 // ============================================================================
 // MIDDLEWARE FLASH
