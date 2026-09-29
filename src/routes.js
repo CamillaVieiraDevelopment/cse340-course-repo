@@ -95,6 +95,10 @@ router.get('/category/:id', showCategoryDetailsPage);
 // Other routes
 router.get('/test-error', testErrorPage);
 
+// User registration routes
+router.get('/register', showUserRegistrationForm);
+router.post('/register', processUserRegistrationForm);
+
 // ============================================================================
 // EXPORTS
 // ============================================================================
