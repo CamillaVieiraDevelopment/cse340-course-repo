@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { createUser, authenticateUser } from '../models/users.js';
 
 // ==========================================
-// MIDDLEWARE DE PROTEÇÃO DE ROTA (Step 1)
+// MIDDLEWARES DE PROTEÇÃO DE ROTA
 // ==========================================
 const requireLogin = (req, res, next) => {
     if (!req.session || !req.session.user) {
@@ -10,6 +10,26 @@ const requireLogin = (req, res, next) => {
         return res.redirect('/login');
     }
     next();
+};
+
+// Adicionado no Step 7: Middleware Factory para exigir Role
+const requireRole = (role) => {
+    return (req, res, next) => {
+        // Check if user is logged in first
+        if (!req.session || !req.session.user) {
+            req.flash('error', 'You must be logged in to access this page.');
+            return res.redirect('/login');
+        }
+
+        // Check if user's role matches the required role
+        if (req.session.user.role_name !== role) {
+            req.flash('error', 'You do not have permission to access this page.');
+            return res.redirect('/');
+        }
+
+        // User has required role, continue
+        next();
+    };
 };
 
 // ==========================================
@@ -21,16 +41,10 @@ const showUserRegistrationForm = (req, res) => {
 
 const processUserRegistrationForm = async (req, res) => {
     const { name, email, password } = req.body;
-
     try {
-        // Hash the password before storing it
         const salt = await bcrypt.genSalt(10);
         const passwordHash = await bcrypt.hash(password, salt);
-
-        // Create the user in the database
         const userId = await createUser(name, email, passwordHash);
-
-        // Redirect to the home page after successful registration
         req.flash('success', 'Registration successful! Please log in.');
         res.redirect('/');
     } catch (error) {
@@ -49,18 +63,14 @@ const showLoginForm = (req, res) => {
 
 const processLoginForm = async (req, res) => {
     const { email, password } = req.body;
-
     try {
         const user = await authenticateUser(email, password);
-
         if (user) {
             req.session.user = user;
             req.flash('success', 'Login successful!');
-
             if (res.locals.NODE_ENV === 'development') {
                 console.log('User logged in:', user);
             }
-            // Alterado no Step 5: Redireciona para o dashboard
             res.redirect('/dashboard');
         } else {
             req.flash('error', 'Invalid email or password.');
@@ -81,7 +91,6 @@ const processLogout = async (req, res) => {
     res.redirect('/login');
 };
 
-// Adicionado no Step 3: Controlador do Dashboard
 const showDashboard = (req, res) => {
     const user = req.session.user;
     res.render('dashboard', {
@@ -96,6 +105,7 @@ const showDashboard = (req, res) => {
 // ==========================================
 export {
     requireLogin,
+    requireRole, // Exportação adicionada
     showUserRegistrationForm,
     processUserRegistrationForm,
     showLoginForm,

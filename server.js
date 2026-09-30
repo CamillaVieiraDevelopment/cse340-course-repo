@@ -62,12 +62,16 @@ app.use(express.json());
 // Middleware to serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Middleware Login e NODE_ENV consolidados
+// Middleware Login, User e NODE_ENV consolidados (Atualizado Step 9)
 app.use((req, res, next) => {
     res.locals.isLoggedIn = false;
+
     if (req.session && req.session.user) {
         res.locals.isLoggedIn = true;
     }
+
+    // Adicionado no Step 9: Disponibiliza a função (role) do usuário em todas as views
+    res.locals.user = (req.session && req.session.user) ? req.session.user : null;
 
     res.locals.NODE_ENV = NODE_ENV;
     next();

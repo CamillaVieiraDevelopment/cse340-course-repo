@@ -1,5 +1,5 @@
-import db from './db.js'
 import bcrypt from 'bcrypt';
+import db from './db.js'; // Assumindo que este é o caminho do seu ficheiro de conexão db
 
 const createUser = async (name, email, passwordHash) => {
     const default_role = 'user';
@@ -9,7 +9,6 @@ const createUser = async (name, email, passwordHash) => {
         RETURNING user_id
     `;
     const queryParams = [name, email, passwordHash, default_role];
-
     const result = await db.query(query, queryParams);
 
     if (result.rows.length === 0) {
@@ -24,19 +23,19 @@ const createUser = async (name, email, passwordHash) => {
 };
 
 const findUserByEmail = async (email) => {
+    // Atualizado no Step 6 para fazer o JOIN e trazer o role_name
     const query = `
-        SELECT user_id, name, email, password_hash, role_id 
-        FROM users 
-        WHERE email = $1
+        SELECT u.user_id, u.name, u.email, u.password_hash, r.role_name
+        FROM users u
+        JOIN roles r ON u.role_id = r.role_id
+        WHERE u.email = $1
     `;
     const queryParams = [email];
-
     const result = await db.query(query, queryParams);
 
     if (result.rows.length === 0) {
-        return null; // User not found
+        return null;
     }
-
     return result.rows[0];
 };
 
@@ -49,11 +48,12 @@ const authenticateUser = async (email, password) => {
     if (!user) {
         return null;
     }
+
     const isPasswordValid = await verifyPassword(password, user.password_hash);
     if (isPasswordValid) {
         delete user.password_hash;
-        return user;    }
-
+        return user;
+    }
     return null;
 };
 

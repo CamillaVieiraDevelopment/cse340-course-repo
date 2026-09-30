@@ -4,9 +4,9 @@
 import express from 'express';
 import { showHomePage } from './controllers/index.js';
 
-// Alterado no Step 4: Importar requireLogin e showDashboard
 import {
     requireLogin,
+    requireRole, // Adicionado no Step 8
     showUserRegistrationForm,
     processUserRegistrationForm,
     showLoginForm,
@@ -15,7 +15,6 @@ import {
     showDashboard
 } from './controllers/users.js';
 
-// Import organization controllers and validation rules together
 import {
     showOrganizationsPage,
     showOrganizationDetailsPage,
@@ -26,7 +25,6 @@ import {
     organizationValidation
 } from './controllers/organizations.js';
 
-// Import project controllers
 import {
     showProjectsPage,
     showProjectDetailsPage,
@@ -37,7 +35,6 @@ import {
     projectValidation
 } from './controllers/projects.js';
 
-// Import category controllers
 import {
     showCategoriesPage,
     showCategoryDetailsPage,
@@ -63,42 +60,42 @@ router.get('/', showHomePage);
 router.get('/organizations', showOrganizationsPage);
 router.get('/organization/:id', showOrganizationDetailsPage);
 
-// Route for new organization page
-router.get('/new-organization', showNewOrganizationForm);
-router.post('/new-organization', organizationValidation, processNewOrganizationForm);
+// Route for new organization page (PROTEGIDO ADMIN)
+router.get('/new-organization', requireRole('admin'), showNewOrganizationForm);
+router.post('/new-organization', requireRole('admin'), organizationValidation, processNewOrganizationForm);
 
-// Routes for editing organization
-router.get('/edit-organization/:id', showEditOrganizationForm);
-router.post('/edit-organization/:id', organizationValidation, processEditOrganizationForm);
+// Routes for editing organization (PROTEGIDO ADMIN)
+router.get('/edit-organization/:id', requireRole('admin'), showEditOrganizationForm);
+router.post('/edit-organization/:id', requireRole('admin'), organizationValidation, processEditOrganizationForm);
 
 // Project routes
 router.get('/projects', showProjectsPage);
 
-// Route for new project page 
-router.get('/new-project', showNewProjectForm);
-router.post('/new-project', projectValidation, processNewProjectForm);
+// Route for new project page (PROTEGIDO ADMIN)
+router.get('/new-project', requireRole('admin'), showNewProjectForm);
+router.post('/new-project', requireRole('admin'), projectValidation, processNewProjectForm);
 
-// Routes for editing project
-router.get('/edit-project/:id', showEditProjectForm);
-router.post('/edit-project/:id', projectValidation, processEditProjectForm);
+// Routes for editing project (PROTEGIDO ADMIN)
+router.get('/edit-project/:id', requireRole('admin'), showEditProjectForm);
+router.post('/edit-project/:id', requireRole('admin'), projectValidation, processEditProjectForm);
 
 // Project details
 router.get('/project/:id', showProjectDetailsPage);
 
-// Routes to handle the assign categories to project form
-router.get('/assign-categories/:projectId', showAssignCategoriesForm);
-router.post('/assign-categories/:projectId', processAssignCategoriesForm);
+// Routes to handle the assign categories to project form (PROTEGIDO ADMIN)
+router.get('/assign-categories/:projectId', requireRole('admin'), showAssignCategoriesForm);
+router.post('/assign-categories/:projectId', requireRole('admin'), processAssignCategoriesForm);
 
 // Category routes
 router.get('/categories', showCategoriesPage);
 
-// NEW: Routes for new category
-router.get('/new-category', showNewCategoryForm);
-router.post('/new-category', categoryValidation, processNewCategoryForm);
+// Routes for new category (PROTEGIDO ADMIN)
+router.get('/new-category', requireRole('admin'), showNewCategoryForm);
+router.post('/new-category', requireRole('admin'), categoryValidation, processNewCategoryForm);
 
-// NEW: Routes for editing category
-router.get('/edit-category/:id', showEditCategoryForm);
-router.post('/edit-category/:id', categoryValidation, processEditCategoryForm);
+// Routes for editing category (PROTEGIDO ADMIN)
+router.get('/edit-category/:id', requireRole('admin'), showEditCategoryForm);
+router.post('/edit-category/:id', requireRole('admin'), categoryValidation, processEditCategoryForm);
 
 // Category details
 router.get('/category/:id', showCategoryDetailsPage);
@@ -115,7 +112,7 @@ router.get('/login', showLoginForm);
 router.post('/login', processLoginForm);
 router.get('/logout', processLogout);
 
-// Adicionado no Step 4: Rota protegida do painel de controlo (Dashboard)
+// Protected dashboard route
 router.get('/dashboard', requireLogin, showDashboard);
 
 // ============================================================================
