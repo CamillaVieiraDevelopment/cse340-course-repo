@@ -1,0 +1,42 @@
+<%- include('partials/header') %>
+
+    <main class="container">
+        <h1>
+            <%= title %>
+        </h1>
+
+        <%- include('partials/flash') %><!-- Caso utilize um partial para mensagens flash -->
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Função (Role)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (users && users.length> 0) { %>
+                        <% users.forEach(user=> { %>
+                            <tr>
+                                <td>
+                                    <%= user.name %>
+                                </td>
+                                <td>
+                                    <%= user.email %>
+                                </td>
+                                <td>
+                                    <%= user.role==='admin' ? 'Administrador' : 'Usuário Padrão' %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="3">Nenhum usuário encontrado.</td>
+                                    </tr>
+                                    <% } %>
+                </tbody>
+            </table>
+    </main>
+
+    <%- include('partials/footer') %>

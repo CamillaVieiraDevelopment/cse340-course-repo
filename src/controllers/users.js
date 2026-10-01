@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
-import { createUser, authenticateUser } from '../models/users.js';
+// Importação do getAllUsers adicionada aqui
+import { createUser, authenticateUser, getAllUsers } from '../models/users.js';
 
 // ==========================================
 // MIDDLEWARES DE PROTEÇÃO DE ROTA
@@ -24,7 +25,8 @@ const requireRole = (role) => {
         // Check if user's role matches the required role
         if (req.session.user.role_name !== role) {
             req.flash('error', 'You do not have permission to access this page.');
-            return res.redirect('/');
+            // Ajustado para redirecionar para o dashboard conforme requisito da Semana 5
+            return res.redirect('/dashboard');
         }
 
         // User has required role, continue
@@ -101,15 +103,31 @@ const showDashboard = (req, res) => {
 };
 
 // ==========================================
+// USERS MANAGEMENT FUNCTIONS (SEMANA 5)
+// ==========================================
+const showUsersPage = async (req, res, next) => {
+    try {
+        const users = await getAllUsers();
+        res.render('users', {
+            title: 'Gerenciamento de Usuários',
+            users: users
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ==========================================
 // EXPORTS
 // ==========================================
 export {
     requireLogin,
-    requireRole, // Exportação adicionada
+    requireRole,
     showUserRegistrationForm,
     processUserRegistrationForm,
     showLoginForm,
     processLoginForm,
     processLogout,
-    showDashboard
+    showDashboard,
+    showUsersPage // Exportação da nova função adicionada
 };

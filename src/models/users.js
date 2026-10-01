@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import db from './db.js'; // Assumindo que este é o caminho do seu ficheiro de conexão db
+import db from './db.js';
 
 const createUser = async (name, email, passwordHash) => {
     const default_role = 'user';
@@ -23,7 +23,6 @@ const createUser = async (name, email, passwordHash) => {
 };
 
 const findUserByEmail = async (email) => {
-    // Atualizado no Step 6 para fazer o JOIN e trazer o role_name
     const query = `
         SELECT u.user_id, u.name, u.email, u.password_hash, r.role_name
         FROM users u
@@ -57,4 +56,21 @@ const authenticateUser = async (email, password) => {
     return null;
 };
 
-export { createUser, authenticateUser };
+// Requisito W05: Função para buscar todos os usuários
+const getAllUsers = async () => {
+    try {
+        const sql = `
+            SELECT u.user_id as id, u.name, u.email, r.role_name as role 
+            FROM users u 
+            JOIN roles r ON u.role_id = r.role_id 
+            ORDER BY u.name ASC
+        `;
+        const result = await db.query(sql);
+        return result.rows;
+    } catch (error) {
+        console.error('Erro ao buscar usuários:', error);
+        throw error;
+    }
+};
+
+export { createUser, findUserByEmail, verifyPassword, authenticateUser, getAllUsers };

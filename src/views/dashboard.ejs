@@ -1,12 +1,26 @@
-<%- include ('partials/header') %>
-    <main>
+<%- include('partials/header') %>
+    <main class="container">
         <h1>
             <%= title %>
         </h1>
-        <h2>Dashboard</h2>
-        <p>Name: <%= name %>
-        </p>
-        <p>Username: <%= email %>
-        </p>
+
+        <%- include('partials/flash') %>
+
+            <h2>Dashboard</h2>
+            <p>Name: <%= name %>
+            </p>
+            <p>Username: <%= email %>
+            </p>
+
+            <!-- Exibe o link APENAS se o usuário logado tiver a função 'admin' -->
+            <% const userRole=(locals.user && (locals.user.role_name || locals.user.role)); if (userRole==='admin' ) {
+                %>
+                <div class="admin-links" style="margin-top: 2rem;">
+                    <h3>Ações de Administrador</h3>
+                    <ul>
+                        <li><a href="/users">Gerenciar Usuários (Listar Todos)</a></li>
+                    </ul>
+                </div>
+                <% } %>
     </main>
     <%- include('partials/footer') %>

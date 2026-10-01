@@ -1,0 +1,15 @@
+<% if (locals.flashMessages) { %>
+    <% if (flashMessages.success) { %>
+        <div class="alert alert-success"
+            style="color: green; padding: 10px; margin-bottom: 15px; border: 1px solid green;">
+            <%= flashMessages.success %>
+        </div>
+        <% } %>
+
+            <% if (flashMessages.error) { %>
+                <div class="alert alert-error"
+                    style="color: red; padding: 10px; margin-bottom: 15px; border: 1px solid red;">
+                    <%= flashMessages.error %>
+                </div>
+                <% } %>
+                    <% } %>

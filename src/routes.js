@@ -6,13 +6,14 @@ import { showHomePage } from './controllers/index.js';
 
 import {
     requireLogin,
-    requireRole, // Adicionado no Step 8
+    requireRole,
     showUserRegistrationForm,
     processUserRegistrationForm,
     showLoginForm,
     processLoginForm,
     processLogout,
-    showDashboard
+    showDashboard,
+    showUsersPage // Vírgula adicionada aqui e função importada
 } from './controllers/users.js';
 
 import {
@@ -114,6 +115,9 @@ router.get('/logout', processLogout);
 
 // Protected dashboard route
 router.get('/dashboard', requireLogin, showDashboard);
+
+// User routes (REQUISITO W05 - Acesso Protegido)
+router.get('/users', requireRole('admin'), showUsersPage);
 
 // ============================================================================
 // EXPORTS
