@@ -1,4 +1,12 @@
-import { getUpcomingProjects, getProjectDetails, createProject, updateProject } from '../models/projects.js';
+import {
+    getUpcomingProjects,
+    getProjectDetails,
+    createProject,
+    updateProject,
+    addVolunteer,
+    removeVolunteer,
+    checkIfVolunteer
+} from '../models/projects.js';
 import { getCategoriesByProjectId } from '../models/categories.js';
 import { getAllOrganizations } from '../models/organizations.js';
 import { body, validationResult } from 'express-validator';
@@ -33,15 +41,25 @@ const showProjectsPage = async (req, res) => {
     res.render('projects', { title, projects });
 };
 
+// UPDATED (WEEK 06): Check if the user is a volunteer for this project
 const showProjectDetailsPage = async (req, res) => {
     const projectId = req.params.id;
 
     const project = await getProjectDetails(projectId);
     const categories = await getCategoriesByProjectId(projectId);
 
+    let isVolunteer = false;
+
+    // If the user is logged in, check the database to see if they are a volunteer
+    if (req.session && req.session.user) {
+        const userId = req.session.user.user_id || req.session.user.id;
+        isVolunteer = await checkIfVolunteer(userId, projectId);
+    }
+
     const title = 'Project Details';
 
-    res.render('project', { title, project, categories });
+    // Pass the isVolunteer variable to the view
+    res.render('project', { title, project, categories, isVolunteer });
 };
 
 // Render new project form
@@ -74,7 +92,7 @@ const processNewProjectForm = async (req, res) => {
     }
 };
 
-// NEW: Show edit project form
+// Show edit project form
 const showEditProjectForm = async (req, res) => {
     const projectId = req.params.id;
     const project = await getProjectDetails(projectId);
@@ -84,7 +102,7 @@ const showEditProjectForm = async (req, res) => {
     res.render('edit-project', { title, project, organizations });
 };
 
-// NEW: Process edit project submission
+// Process edit project submission
 const processEditProjectForm = async (req, res) => {
     const projectId = req.params.id;
     const errors = validationResult(req);
@@ -109,6 +127,47 @@ const processEditProjectForm = async (req, res) => {
     }
 };
 
+// ============================================================================
+// VOLUNTEER CONTROLLERS (WEEK 06)
+// ============================================================================
+
+// NEW: Process volunteer registration
+const processVolunteerForProject = async (req, res) => {
+    const projectId = req.params.id;
+    const userId = req.session.user.user_id || req.session.user.id;
+
+    try {
+        await addVolunteer(userId, projectId);
+        req.flash('success', 'You have successfully volunteered for this project!');
+    } catch (error) {
+        console.error('Error volunteering:', error);
+        req.flash('error', 'There was an error while trying to volunteer.');
+    }
+
+    res.redirect(`/project/${projectId}`);
+};
+
+// NEW: Process volunteer cancellation
+const processUnvolunteerFromProject = async (req, res) => {
+    const projectId = req.params.id;
+    const userId = req.session.user.user_id || req.session.user.id;
+
+    try {
+        await removeVolunteer(userId, projectId);
+        req.flash('success', 'You have canceled your volunteer registration for this project.');
+    } catch (error) {
+        console.error('Error removing volunteer:', error);
+        req.flash('error', 'There was an error while trying to cancel the volunteering.');
+    }
+
+    const referer = req.headers.referer || '';
+    if (referer.includes('/dashboard')) {
+        res.redirect('/dashboard');
+    } else {
+        res.redirect(`/project/${projectId}`);
+    }
+};
+
 export {
     showProjectsPage,
     showProjectDetailsPage,
@@ -116,5 +175,7 @@ export {
     processNewProjectForm,
     showEditProjectForm,
     processEditProjectForm,
-    projectValidation
+    projectValidation,
+    processVolunteerForProject,
+    processUnvolunteerFromProject
 };
