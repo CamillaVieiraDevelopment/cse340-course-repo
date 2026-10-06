@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt';
-// Importação do getAllUsers adicionada aqui
 import { createUser, authenticateUser, getAllUsers } from '../models/users.js';
+import { getVolunteeredProjects } from '../models/projects.js';
 
 // ==========================================
-// MIDDLEWARES DE PROTEÇÃO DE ROTA
+// MIDDLEWARES ROUTE PROTECTION
 // ==========================================
 const requireLogin = (req, res, next) => {
     if (!req.session || !req.session.user) {
@@ -13,23 +13,18 @@ const requireLogin = (req, res, next) => {
     next();
 };
 
-// Adicionado no Step 7: Middleware Factory para exigir Role
 const requireRole = (role) => {
     return (req, res, next) => {
-        // Check if user is logged in first
         if (!req.session || !req.session.user) {
             req.flash('error', 'You must be logged in to access this page.');
             return res.redirect('/login');
         }
 
-        // Check if user's role matches the required role
         if (req.session.user.role_name !== role) {
             req.flash('error', 'You do not have permission to access this page.');
-            // Ajustado para redirecionar para o dashboard conforme requisito da Semana 5
             return res.redirect('/dashboard');
         }
 
-        // User has required role, continue
         next();
     };
 };
@@ -93,17 +88,27 @@ const processLogout = async (req, res) => {
     res.redirect('/login');
 };
 
-const showDashboard = (req, res) => {
-    const user = req.session.user;
-    res.render('dashboard', {
-        title: 'Dashboard',
-        name: user.name,
-        email: user.email
-    });
+// Search for volunteer projects and submit them to the dashboard
+const showDashboard = async (req, res, next) => {
+    try {
+        const user = req.session.user;
+        const userId = user.user_id || user.id;         
+        const volunteeredProjects = await getVolunteeredProjects(userId);
+
+        res.render('dashboard', {
+            title: 'Dashboard',
+            name: user.name,
+            email: user.email,
+            volunteeredProjects: volunteeredProjects 
+        });
+    } catch (error) {
+        console.error('Error loading dashboard:', error);
+        next(error);
+    }
 };
 
 // ==========================================
-// USERS MANAGEMENT FUNCTIONS (SEMANA 5)
+// USERS MANAGEMENT FUNCTIONS 
 // ==========================================
 const showUsersPage = async (req, res, next) => {
     try {
@@ -129,5 +134,5 @@ export {
     processLoginForm,
     processLogout,
     showDashboard,
-    showUsersPage // Exportação da nova função adicionada
+    showUsersPage
 };

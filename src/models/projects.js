@@ -182,6 +182,6 @@ export {
     showEditProjectForm,
     processEditProjectForm,
     projectValidation,
-    processVolunteerForProject,      // Exporting the new function
-    processUnvolunteerFromProject    // Exporting the new function
+    processVolunteerForProject,      
+    processUnvolunteerFromProject   
 };
