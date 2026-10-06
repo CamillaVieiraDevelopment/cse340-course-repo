@@ -1,5 +1,4 @@
-import db from '../database/index.js'; // Ajuste para 'db.js' se necessário
-
+import db from './db.js'
 /* ***************************
  * FUNÇÕES ANTIGAS (RESTAURADAS)
  * ************************** */
