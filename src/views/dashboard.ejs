@@ -7,20 +7,48 @@
         <%- include('partials/flash') %>
 
             <h2>Dashboard</h2>
-            <p>Name: <%= name %>
+            <p><strong>Name:</strong>
+                <%= name %>
             </p>
-            <p>Username: <%= email %>
+            <p><strong>Username:</strong>
+                <%= email %>
             </p>
 
-            <!-- Exibe o link APENAS se o usuário logado tiver a função 'admin' -->
-            <% const userRole=(locals.user && (locals.user.role_name || locals.user.role)); if (userRole==='admin' ) {
-                %>
-                <div class="admin-links" style="margin-top: 2rem;">
-                    <h3>Ações de Administrador</h3>
+            <hr>
+
+            <!-- SECÇÃO DE PROJETOS VOLUNTARIADOS -->
+            <div class="volunteered-projects" style="margin-top: 2rem;">
+                <h3>My Volunteered Projects</h3>
+                <% if (locals.volunteeredProjects && locals.volunteeredProjects.length> 0) { %>
                     <ul>
-                        <li><a href="/users">Gerenciar Usuários (Listar Todos)</a></li>
+                        <% locals.volunteeredProjects.forEach(project=> { %>
+                            <li style="margin-bottom: 10px;">
+                                <a href="/project/<%= project.project_id %>">
+                                    <%= project.title %>
+                                </a>
+                                (Date: <%= new Date(project.date).toLocaleDateString() %>)
+                                    <br>
+                                    <a href="/unvolunteer/<%= project.project_id %>"
+                                        style="color: red; font-size: 0.9em;">Remove Volunteer</a>
+                            </li>
+                            <% }) %>
                     </ul>
-                </div>
-                <% } %>
+                    <% } else { %>
+                        <p>You haven't volunteered for any projects yet.</p>
+                        <% } %>
+            </div>
+
+            <hr>
+
+            <!-- Exibe o link APENAS se o usuário logado tiver a função 'admin' -->
+            <% const userRole=(locals.user && (locals.user.role_name || locals.user.role)); %>
+                <% if (userRole==='admin' ) { %>
+                    <div class="admin-links" style="margin-top: 2rem;">
+                        <h3>Ações de Administrador</h3>
+                        <ul>
+                            <li><a href="/users">Gerenciar Usuários (Listar Todos)</a></li>
+                        </ul>
+                    </div>
+                    <% } %>
     </main>
     <%- include('partials/footer') %>

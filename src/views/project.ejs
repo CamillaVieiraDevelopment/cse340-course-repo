@@ -9,8 +9,8 @@
             <%= project.title %>
         </h2>
 
-        <!-- Restringido para Admin[cite: 7] -->
-        <% if (user && user.role_name==='admin' ) { %>
+        <!-- Restringido para Admin -->
+        <% if (locals.user && (locals.user.role_name==='admin' || locals.user.role==='admin' )) { %>
             <p>
                 <a href="/edit-project/<%= project.project_id %>">Edit Project</a> |
                 <a href="/assign-categories/<%= project.project_id %>">Edit Categories</a>
@@ -30,18 +30,31 @@
                     <%= project.location %>
                 </p>
 
-                <h3>Categories:</h3>
-                <% if (categories && categories.length> 0) { %>
-                    <ul>
-                        <% categories.forEach(category=> { %>
-                            <li><a href="/category/<%= category.category_id %>">
-                                    <%= category.name %>
-                                </a></li>
-                            <% }); %>
-                    </ul>
-                    <% } else { %>
-                        <p>No categories assigned to this project yet.</p>
-                        <% } %>
+                <!-- SECÇÃO DE VOLUNTARIADO (Visível apenas para utilizadores logados) -->
+                <% if (locals.user) { %>
+                    <div style="margin: 20px 0; padding: 15px; border: 1px solid #ccc; background-color: #f9f9f9;">
+                        <% if (locals.isVolunteer) { %>
+                            <p><strong>You are volunteering for this project.</strong></p>
+                            <a href="/unvolunteer/<%= project.project_id %>" style="color: red;">Remove Volunteer</a>
+                            <% } else { %>
+                                <a href="/volunteer/<%= project.project_id %>"
+                                    style="color: green; font-weight: bold;">Volunteer for this Project</a>
+                                <% } %>
+                    </div>
+                    <% } %>
+
+                        <h3>Categories:</h3>
+                        <% if (categories && categories.length> 0) { %>
+                            <ul>
+                                <% categories.forEach(category=> { %>
+                                    <li><a href="/category/<%= category.category_id %>">
+                                            <%= category.name %>
+                                        </a></li>
+                                    <% }); %>
+                            </ul>
+                            <% } else { %>
+                                <p>No categories assigned to this project yet.</p>
+                                <% } %>
 
     </main>
 

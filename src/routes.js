@@ -34,8 +34,8 @@ import {
     showEditProjectForm,
     processEditProjectForm,
     projectValidation,
-    processVolunteerForProject,     
-    processUnvolunteerFromProject   
+    processVolunteerForProject,
+    processUnvolunteerFromProject
 } from './controllers/projects.js';
 
 import {
