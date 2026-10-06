@@ -71,7 +71,20 @@ const checkIfVolunteer = async (userId, projectId) => {
     return result.rowCount > 0;
 };
 
-// Exportando todas as funções sem erros
+// Adicione esta função junto das outras de voluntariado
+const getVolunteeredProjects = async (userId) => {
+    const query = `
+        SELECT p.* 
+        FROM public.service_project p
+        JOIN volunteers v ON p.project_id = v.project_id
+        WHERE v.user_id = $1
+        ORDER BY p.date ASC
+    `;
+    const result = await db.query(query, [userId]);
+    return result.rows;
+};
+
+// Substitua o seu export final por este:
 export {
     getProjectsByOrganizationId,
     getUpcomingProjects,
@@ -80,5 +93,6 @@ export {
     updateProject,
     addVolunteer,
     removeVolunteer,
-    checkIfVolunteer
+    checkIfVolunteer,
+    getVolunteeredProjects // <-- Nova função adicionada aqui
 };
