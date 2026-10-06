@@ -13,7 +13,7 @@ import {
     processLoginForm,
     processLogout,
     showDashboard,
-    showUsersPage // Vírgula adicionada aqui e função importada
+    showUsersPage
 } from './controllers/users.js';
 
 import {
@@ -33,7 +33,9 @@ import {
     processNewProjectForm,
     showEditProjectForm,
     processEditProjectForm,
-    projectValidation
+    projectValidation,
+    processVolunteerForProject,     
+    processUnvolunteerFromProject   
 } from './controllers/projects.js';
 
 import {
@@ -72,29 +74,33 @@ router.post('/edit-organization/:id', requireRole('admin'), organizationValidati
 // Project routes
 router.get('/projects', showProjectsPage);
 
-// Route for new project page (PROTEGIDO ADMIN)
+// Route for new project page (PROTECTED ADMIN)
 router.get('/new-project', requireRole('admin'), showNewProjectForm);
 router.post('/new-project', requireRole('admin'), projectValidation, processNewProjectForm);
 
-// Routes for editing project (PROTEGIDO ADMIN)
+// Routes for editing project (PROTECTED ADMIN)
 router.get('/edit-project/:id', requireRole('admin'), showEditProjectForm);
 router.post('/edit-project/:id', requireRole('admin'), projectValidation, processEditProjectForm);
 
 // Project details
 router.get('/project/:id', showProjectDetailsPage);
 
-// Routes to handle the assign categories to project form (PROTEGIDO ADMIN)
+// VOLUNTEER ROUTES - PROTECTED FOR LOGGED USERS
+router.get('/volunteer/:id', requireLogin, processVolunteerForProject);
+router.get('/unvolunteer/:id', requireLogin, processUnvolunteerFromProject);
+
+// Routes to handle the assign categories to project form (PROTECTED ADMIN)
 router.get('/assign-categories/:projectId', requireRole('admin'), showAssignCategoriesForm);
 router.post('/assign-categories/:projectId', requireRole('admin'), processAssignCategoriesForm);
 
 // Category routes
 router.get('/categories', showCategoriesPage);
 
-// Routes for new category (PROTEGIDO ADMIN)
+// Routes for new category (PROTECTED ADMIN)
 router.get('/new-category', requireRole('admin'), showNewCategoryForm);
 router.post('/new-category', requireRole('admin'), categoryValidation, processNewCategoryForm);
 
-// Routes for editing category (PROTEGIDO ADMIN)
+// Routes for editing category (PROTECTED ADMIN)
 router.get('/edit-category/:id', requireRole('admin'), showEditCategoryForm);
 router.post('/edit-category/:id', requireRole('admin'), categoryValidation, processEditCategoryForm);
 
@@ -116,7 +122,7 @@ router.get('/logout', processLogout);
 // Protected dashboard route
 router.get('/dashboard', requireLogin, showDashboard);
 
-// User routes (REQUISITO W05 - Acesso Protegido)
+// User routes (PROTECTED REQUIRED)
 router.get('/users', requireRole('admin'), showUsersPage);
 
 // ============================================================================
