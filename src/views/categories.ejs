@@ -4,7 +4,7 @@
             <%= title %>
         </h1>
 
-        <!-- Restringido para Admin -->
+        <!-- Restrict area for Admins -->
         <% if (user && user.role_name==='admin' ) { %>
             <p><a href="/new-category">Create New Category</a></p>
             <% } %>

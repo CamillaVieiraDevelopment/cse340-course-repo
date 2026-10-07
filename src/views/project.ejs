@@ -9,7 +9,7 @@
             <%= project.title %>
         </h2>
 
-        <!-- Restringido para Admin -->
+        <!-- Restrict for Admin -->
         <% if (locals.user && (locals.user.role_name==='admin' || locals.user.role==='admin' )) { %>
             <p>
                 <a href="/edit-project/<%= project.project_id %>">Edit Project</a> |
@@ -30,7 +30,7 @@
                     <%= project.location %>
                 </p>
 
-                <!-- SECÇÃO DE VOLUNTARIADO (Visível apenas para utilizadores logados) -->
+                <!-- SECTION FOR VOLUNTEERS -->
                 <% if (locals.user) { %>
                     <div style="margin: 20px 0; padding: 15px; border: 1px solid #ccc; background-color: #f9f9f9;">
                         <% if (locals.isVolunteer) { %>

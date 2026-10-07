@@ -16,7 +16,7 @@
 
             <hr>
 
-            <!-- SECÇÃO DE PROJETOS VOLUNTARIADOS -->
+            <!-- VOLUNTEERS SECTION -->
             <div class="volunteered-projects" style="margin-top: 2rem;">
                 <h3>My Volunteered Projects</h3>
                 <% if (locals.volunteeredProjects && locals.volunteeredProjects.length> 0) { %>
@@ -40,7 +40,7 @@
 
             <hr>
 
-            <!-- Exibe o link APENAS se o usuário logado tiver a função 'admin' -->
+            <!-- Show the link only user admin -->
             <% const userRole=(locals.user && (locals.user.role_name || locals.user.role)); %>
                 <% if (userRole==='admin' ) { %>
                     <div class="admin-links" style="margin-top: 2rem;">

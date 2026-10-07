@@ -9,7 +9,7 @@
             <%= organizationDetails.name %>
         </h2>
 
-        <!-- Restringido para Admin -->
+        <!-- Restrict for Admin -->
         <% if (user && user.role_name==='admin' ) { %>
             <p>
                 <a href="/edit-organization/<%= organizationDetails.organization_id %>">Edit Organization</a>

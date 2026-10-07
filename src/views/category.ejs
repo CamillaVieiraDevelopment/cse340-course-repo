@@ -5,7 +5,7 @@
             <%= category.name %>
         </h1>
 
-        <!-- Restringido para Admin[cite: 7] -->
+        <!-- Restrict for Admin-->
         <% if (user && user.role_name==='admin' ) { %>
             <p><a href="/edit-category/<%= category.category_id %>">Edit Category</a></p>
             <% } %>

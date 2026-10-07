@@ -56,7 +56,7 @@ const authenticateUser = async (email, password) => {
     return null;
 };
 
-// Requisito W05: Função para buscar todos os usuários
+// Research all users
 const getAllUsers = async () => {
     try {
         const sql = `

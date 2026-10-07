@@ -5,7 +5,7 @@
             <%= title %>
         </h1>
 
-        <!-- Restringido para Admin[cite: 7] -->
+        <!-- Restrict for Admin-->
         <% if (user && user.role_name==='admin' ) { %>
             <p><a href="/new-project">Add a New Service Project</a></p>
             <% } %>
