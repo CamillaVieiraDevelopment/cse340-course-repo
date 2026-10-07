@@ -1,6 +1,7 @@
 import db from './db.js'
+
 /* ***************************
- * FUNÇÕES ANTIGAS (RESTAURADAS)
+ * PROJECT READ AND CREATE OPERATIONS
  * ************************** */
 
 const getProjectsByOrganizationId = async (organizationId) => {
@@ -29,7 +30,7 @@ const createProject = async (title, description, location, date, organizationId)
 };
 
 /* ***************************
- * FUNÇÃO DE UPDATE (Do commit de 26/10)
+ * PROJECT UPDATE OPERATION
  * ************************** */
 const updateProject = async (projectId, title, description, location, date, organizationId) => {
     const query = `UPDATE public.service_project 
@@ -52,7 +53,7 @@ const updateProject = async (projectId, title, description, location, date, orga
 };
 
 /* ***************************
- * NOVAS FUNÇÕES DA SEMANA 06
+ * VOLUNTEER MANAGEMENT OPERATIONS
  * ************************** */
 const addVolunteer = async (userId, projectId) => {
     const sql = 'INSERT INTO volunteers (user_id, project_id) VALUES ($1, $2) RETURNING *';
@@ -71,7 +72,7 @@ const checkIfVolunteer = async (userId, projectId) => {
     return result.rowCount > 0;
 };
 
-// Adicione esta função junto das outras de voluntariado
+// Retrieve projects associated with a specific volunteer
 const getVolunteeredProjects = async (userId) => {
     const query = `
         SELECT p.* 
@@ -84,7 +85,7 @@ const getVolunteeredProjects = async (userId) => {
     return result.rows;
 };
 
-// Substitua o seu export final por este:
+// Module Exports
 export {
     getProjectsByOrganizationId,
     getUpcomingProjects,
@@ -94,5 +95,5 @@ export {
     addVolunteer,
     removeVolunteer,
     checkIfVolunteer,
-    getVolunteeredProjects // <-- Nova função adicionada aqui
+    getVolunteeredProjects
 };

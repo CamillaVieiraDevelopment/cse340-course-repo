@@ -11,7 +11,7 @@ import {
 import { getProjectDetails } from '../models/projects.js';
 import { body, validationResult } from 'express-validator';
 
-// NEW: Validation rules for category
+// Validation rules for category
 const categoryValidation = [
     body('name')
         .trim()
@@ -64,13 +64,13 @@ const processAssignCategoriesForm = async (req, res) => {
     res.redirect(`/project/${projectId}`);
 };
 
-// NEW: Show form to create new category
+// Show form to create new category
 const showNewCategoryForm = async (req, res) => {
     const title = 'Create New Category';
     res.render('new-category', { title });
 };
 
-// NEW: Process new category
+// Process new category
 const processNewCategoryForm = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -91,7 +91,7 @@ const processNewCategoryForm = async (req, res) => {
     }
 };
 
-// NEW: Show form to edit category
+// Show form to edit category
 const showEditCategoryForm = async (req, res) => {
     const categoryId = req.params.id;
     const category = await getCategoryDetails(categoryId);
@@ -100,7 +100,7 @@ const showEditCategoryForm = async (req, res) => {
     res.render('edit-category', { title, category });
 };
 
-// NEW: Process edit category
+//Process edit category
 const processEditCategoryForm = async (req, res) => {
     const categoryId = req.params.id;
     const errors = validationResult(req);

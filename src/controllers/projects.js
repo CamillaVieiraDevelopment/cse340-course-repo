@@ -41,7 +41,7 @@ const showProjectsPage = async (req, res) => {
     res.render('projects', { title, projects });
 };
 
-// UPDATED (WEEK 06): Check if the user is a volunteer for this project
+// Check if the user is a volunteer for this project
 const showProjectDetailsPage = async (req, res) => {
     const projectId = req.params.id;
 

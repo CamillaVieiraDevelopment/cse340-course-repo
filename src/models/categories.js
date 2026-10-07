@@ -74,7 +74,7 @@ const updateCategoryAssignments = async (projectId, categoryIds) => {
     }
 };
 
-// NEW: Create a new category
+// Create a new category
 const createCategory = async (name) => {
     const query = `
         INSERT INTO public.category (name)
@@ -85,7 +85,7 @@ const createCategory = async (name) => {
     return result.rows[0].category_id;
 };
 
-// NEW: Update an existing category
+// Update an existing category
 const updateCategory = async (categoryId, name) => {
     const query = `
         UPDATE public.category

@@ -58,7 +58,7 @@ const createOrganization = async (name, description, contactEmail, logoFilename)
   return result.rows[0].organization_id;
 };
 
-// Nova função para atualizar uma organização existente
+// Update organization
 const updateOrganization = async (organizationId, name, description, contactEmail, logoFilename) => {
   const query = `
         UPDATE organization
@@ -80,5 +80,5 @@ const updateOrganization = async (organizationId, name, description, contactEmai
   return result.rows[0].organization_id;
 };
 
-// Export the model functions - AQUI FOI ADICIONADA A NOVA FUNÇÃO
+// Export the model functions
 export { getAllOrganizations, getOrganizationDetails, createOrganization, updateOrganization };
