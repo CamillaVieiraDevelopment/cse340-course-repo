@@ -55,45 +55,51 @@ const updateProject = async (projectId, title, description, location, date, orga
 /* ***************************
  * VOLUNTEER MANAGEMENT OPERATIONS
  * ************************** */
+// Adicionar um usuário como voluntário em um projeto
 const addVolunteer = async (userId, projectId) => {
-    const sql = 'INSERT INTO volunteers (user_id, project_id) VALUES ($1, $2) RETURNING *';
-    const result = await db.query(sql, [userId, projectId]);
-    return result.rows[0];
+    const query = `
+        INSERT INTO project_volunteers (user_id, project_id)
+        VALUES ($1, $2)
+        ON CONFLICT DO NOTHING;
+    `;
+    await db.query(query, [userId, projectId]);
 };
 
+// Remover um usuário de um projeto de voluntariado
 const removeVolunteer = async (userId, projectId) => {
-    const sql = 'DELETE FROM volunteers WHERE user_id = $1 AND project_id = $2';
-    return await db.query(sql, [userId, projectId]);
+    const query = `
+        DELETE FROM project_volunteers
+        WHERE user_id = $1 AND project_id = $2;
+    `;
+    await db.query(query, [userId, projectId]);
 };
 
+// Verificar se um usuário já é voluntário em um projeto específico
 const checkIfVolunteer = async (userId, projectId) => {
-    const sql = 'SELECT * FROM volunteers WHERE user_id = $1 AND project_id = $2';
-    const result = await db.query(sql, [userId, projectId]);
-    return result.rowCount > 0;
+    const query = `
+        SELECT 1 FROM project_volunteers
+        WHERE user_id = $1 AND project_id = $2;
+    `;
+    const result = await db.query(query, [userId, projectId]);
+    return result.rows.length > 0;
 };
 
-// Retrieve projects associated with a specific volunteer
+// Buscar a lista de projetos nos quais o usuário se voluntariou (para o Dashboard)
 const getVolunteeredProjects = async (userId) => {
     const query = `
-        SELECT p.* 
+        SELECT 
+            p.project_id, 
+            p.title, 
+            p.description, 
+            p.date, 
+            p.location, 
+            o.name AS organization_name
         FROM public.service_project p
-        JOIN volunteers v ON p.project_id = v.project_id
-        WHERE v.user_id = $1
-        ORDER BY p.date ASC
+        JOIN public.organization o ON p.organization_id = o.organization_id
+        JOIN project_volunteers pv ON p.project_id = pv.project_id
+        WHERE pv.user_id = $1
+        ORDER BY p.date ASC;
     `;
     const result = await db.query(query, [userId]);
     return result.rows;
-};
-
-// Module Exports
-export {
-    getProjectsByOrganizationId,
-    getUpcomingProjects,
-    getProjectDetails,
-    createProject,
-    updateProject,
-    addVolunteer,
-    removeVolunteer,
-    checkIfVolunteer,
-    getVolunteeredProjects
 };
