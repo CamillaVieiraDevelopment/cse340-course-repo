@@ -103,3 +103,19 @@ const getVolunteeredProjects = async (userId) => {
     const result = await db.query(query, [userId]);
     return result.rows;
 };
+
+// ============================================================================
+// EXPORTS
+// ============================================================================
+export {
+    getAllProjects,
+    getProjectsByOrganizationId,
+    getUpcomingProjects,
+    getProjectDetails,
+    createProject,
+    updateProject,
+    addVolunteer,
+    removeVolunteer,
+    checkIfVolunteer,
+    getVolunteeredProjects
+};
