@@ -108,6 +108,7 @@ const getVolunteeredProjects = async (userId) => {
 // EXPORTS
 // ============================================================================
 export {
+    getProjectsByOrganizationId,
     getUpcomingProjects,
     getProjectDetails,
     createProject,
